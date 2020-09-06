@@ -21,7 +21,7 @@ class GitHubRepository {
     <#
         Specifies the languages that are used in the GitHub repository.
     #>
-    [string[]]$Languages
+    [string]$Languages
 
     <#
         Specifies the ID of the owner of the GitHub repository.

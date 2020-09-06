@@ -29,6 +29,5 @@ function New-GitHubUser {
     $githubUser.Name = $GitHubUserData.login
     $githubUser.Type = $GitHubUserData.type.ToString()
 
-    Write-Host -Object "Created GitHub user with name $($githubUser.Name)."
     $githubUser
 }

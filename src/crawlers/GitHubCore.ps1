@@ -60,7 +60,6 @@ function Invoke-GitHubRequest {
 
     while ($retriesCount -gt 0) {
         try {
-            Write-Host -Object "Invoking web request to Uri $Uri."
             $result = Invoke-WebRequest @invokeWebRequestParams
             break
         }
@@ -68,15 +67,15 @@ function Invoke-GitHubRequest {
             if ($_.ErrorDetails.Message -Match 'Repository access blocked') {
                 break
             }
-
-            if ($_.ErrorDetails.Message -Match 'API rate limit exceeded') {
+            elseif ($_.ErrorDetails.Message -Match 'API rate limit exceeded') {
                 Write-Warning -Message $_.ErrorDetails.Message -ErrorAction Continue
                 Write-Warning -Message $_.Exception.Message -ErrorAction Continue
                 Start-Sleep -Seconds 60
                 $retriesCount -= 1
             }
-
-            Write-Error -Exception $_ -ErrorAction Stop
+            else {
+                Write-Error -Message $_.ErrorDetails.Message -ErrorAction Stop
+            }
         }
         finally {
             $error.Clear()

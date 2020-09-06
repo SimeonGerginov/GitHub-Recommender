@@ -57,8 +57,11 @@ function Get-GitHubRepositories {
         }
 
         $githubRepositoryLanguagesData = $githubRepositoryLanguagesResult.Content | ConvertFrom-Json
+        if ($null -eq $githubRepositoryLanguagesData -or $githubRepositoryLanguagesData.Count -eq 0) {
+            continue
+        }
 
-        $githubRepository.Languages = Get-GitHubRepositoryLanguages -GitHubRepositoryLanguagesData $githubRepositoryLanguagesData
+        $githubRepository.Languages = (Get-GitHubRepositoryLanguages -GitHubRepositoryLanguagesData $githubRepositoryLanguagesData) -Join ', '
 
         $githubRepositories += $githubRepository
 
@@ -112,7 +115,6 @@ function New-GitHubRepository {
     $githubRepository.CreatedAt = $GitHubRepositoryData.created_at
     $githubRepository.UpdatedAt = $GitHubRepositoryData.updated_at
 
-    Write-Host -Object "Created GitHub repository with name $($githubRepository.Name)."
     $githubRepository
 }
 

@@ -46,7 +46,6 @@ function New-GitHubActivity {
     $githubActivity.UserId = $UserId
     $githubActivity.ActivityType = $ActivityType
 
-    Write-Host -Object "Created GitHubActivity of type $ActivityType."
     $githubActivity
 }
 
