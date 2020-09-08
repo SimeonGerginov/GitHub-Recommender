@@ -27,7 +27,7 @@ if (!(Test-Path -Path $script:TrackGitHubAPIProgressPath)) {
 
 $script:StartUri = Get-Content -Path $script:TrackGitHubAPIProgressPath -Tail 1
 
-$script:NumberOfUsers = 0
+$script:NumberOfUsers = (Get-Content -Path $script:GitHubUsersPath | Measure-Object | Select-Object -ExpandProperty Count) - 1
 $script:MaxNumberOfUsers = 100000
 
 $script:GitHubUsers = @()

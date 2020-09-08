@@ -47,7 +47,7 @@ function Invoke-GitHubRequest {
     )
 
     $result = $null
-    $retriesCount = 60
+    $retriesCount = 12
 
     $base64Token = [System.Convert]::ToBase64String([char[]] $AccessToken)
     $invokeWebRequestParams = @{
@@ -64,13 +64,13 @@ function Invoke-GitHubRequest {
             break
         }
         catch {
-            if ($_.ErrorDetails.Message -Match 'Repository access blocked') {
+            if ($_.ErrorDetails.Message -Match 'Repository access blocked' -or $_.Exception.Message -Match 'Not Found') {
                 break
             }
             elseif ($_.ErrorDetails.Message -Match 'API rate limit exceeded') {
                 Write-Warning -Message $_.ErrorDetails.Message -ErrorAction Continue
                 Write-Warning -Message $_.Exception.Message -ErrorAction Continue
-                Start-Sleep -Seconds 60
+                Start-Sleep -Seconds 300
                 $retriesCount -= 1
             }
             else {
